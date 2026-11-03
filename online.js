@@ -19,9 +19,16 @@
     $('#loginForm').onsubmit = async e => {
       e.preventDefault();
       const button = e.currentTarget.querySelector('button'); button.disabled = true; button.textContent = 'Ingresando…';
-      const { error } = await client.auth.signInWithPassword({ email: $('#loginEmail').value.trim(), password: $('#loginPassword').value });
-      if (error) { button.disabled = false; button.textContent = 'Ingresar'; return showLogin('No pudimos iniciar sesión. Revisa tu correo y contraseña.'); }
-      await loadWorkspace();
+      try {
+        const { error } = await client.auth.signInWithPassword({ email: $('#loginEmail').value.trim(), password: $('#loginPassword').value });
+        if (error) { button.disabled = false; button.textContent = 'Ingresar'; return showLogin('No pudimos iniciar sesión. Revisa tu correo y contraseña.'); }
+        await loadWorkspace();
+        if (!remote.ready && button.isConnected) { button.disabled = false; button.textContent = 'Ingresar'; }
+      } catch (error) {
+        remote.ready = false;
+        console.error('Cerdito Cornudo: no se pudo abrir el servicio después del ingreso.', error);
+        showLogin('La cuenta inició sesión, pero no pudimos abrir el servicio. Intenta ingresar otra vez.');
+      }
     };
   };
 
@@ -48,7 +55,12 @@
       client.from('profiles').select('user_id,full_name').eq('restaurant_id', profile.restaurant_id)
     ]);
     const failed = [productsRes,categoriesRes,tablesRes,ordersRes,profilesRes].find(x => x.error);
-    if (failed) { fail(failed.error); return; }
+    if (failed) {
+      fail(failed.error);
+      remote.ready = false;
+      if (document.body.classList.contains('auth-screen')) showLogin('No pudimos cargar los datos del restaurante. Intenta ingresar otra vez.');
+      return;
+    }
 
     remote.restaurantId = profile.restaurant_id;
     remote.ready = true;
@@ -336,6 +348,10 @@
     await loadWorkspace();
   }
 
-  start().catch(fail);
+  start().catch(error => {
+    fail(error);
+    remote.ready = false;
+    showLogin('No pudimos abrir el servicio. Revisa la conexión e inténtalo de nuevo.');
+  });
 })();
 
