@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2a1918">
+  <title>Cerdito Cornudo | Servicio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="Cerdito Cornudo inicio">
+        <img class="brand-logo" src="assets/logo-cerdito.jpg" alt="Logo Cerdito Cornudo">
+        <span><strong>Cerdito Cornudo</strong><small>OPERACIÓN DEL RESTAURANTE</small></span>
+      </a>
+      <div class="side-label">OPERACIÓN</div>
+      <nav class="nav" aria-label="Navegación principal">
+        <button class="nav-item active" data-view="order"><span class="nav-icon">＋</span>Tomar pedido</button>
+        <button class="nav-item" data-view="orders"><span class="nav-icon">▤</span>Pedidos <span class="nav-count" id="openCount">0</span></button>
+        <button class="nav-item" data-view="dashboard"><span class="nav-icon">▥</span>Ventas</button>
+        <button class="nav-item" data-view="menu"><span class="nav-icon">☷</span>Mi carta</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="service-card"><span class="live-dot"></span><div><strong>Servicio de hoy</strong><small id="todayLabel">—</small></div></div>
+        <button class="profile" id="roleButton"><span class="avatar">MC</span><span><strong>María Camila</strong><small id="roleLabel">Mesera · modo demo</small></span><span class="chevron">⌄</span></button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Abrir menú">☰</button>
+        <div class="breadcrumb"><span>Restaurante</span><b>/</b><strong id="crumb">Tomar pedido</strong></div>
+        <div class="top-actions"><span class="demo-pill"><i></i> DEMO · DATOS EN ESTE DISPOSITIVO</span><span class="today" id="headerDate">—</span></div>
+      </header>
+      <section class="content" id="content"></section>
+      <footer class="footer-note">Versión de demostración · Pedidos y cambios guardados únicamente en este navegador</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script src="online.js"></script>
+</body>
+</html>
+
